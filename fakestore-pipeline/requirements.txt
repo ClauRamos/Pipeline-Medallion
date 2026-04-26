@@ -1,0 +1,8 @@
+# Dependencias para ejecutar el script de ingesta local
+# Instalar con: pip install -r requirements.txt
+
+requests==2.31.0
+
+# PySpark solo si quieres probar transformaciones localmente
+# (no necesario si usás Databricks Community Edition)
+# pyspark==3.5.0

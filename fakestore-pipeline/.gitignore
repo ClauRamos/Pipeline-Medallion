@@ -1,0 +1,48 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# === Entornos virtuales ===
+.venv/
+venv/
+env/
+ENV/
+
+# === Archivos de datos generados (no commitear datos reales) ===
+data/raw/*.json
+ventas_raw_*.json
+
+# La carpeta sample SÍ se commitea (datos de ejemplo)
+!data/sample/
+
+# === Jupyter / IPython ===
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# === IDEs ===
+.vscode/
+.idea/
+*.code-workspace
+
+# === Sistema operativo ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === Variables de entorno y secretos (NUNCA commitear) ===
+.env
+.env.local
+secrets.json
+config_local.py
+
+# === Logs ===
+*.log
+logs/
