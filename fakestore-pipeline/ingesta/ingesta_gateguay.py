@@ -1,23 +1,3 @@
-"""
-ingesta_gateguay.py
-────────────────────────────────────────────────────────────────
-Paso 1 del pipeline: Ingesta desde la FakeStore API (capa Bronze)
-
-Qué hace este script:
-  1. Se conecta a la FakeStore API (API pública de e-commerce simulado)
-  2. Descarga el catálogo completo de productos (20 registros)
-  3. Guarda el resultado como archivo JSON con partición de fecha
-     → ventas_raw_YYYY-MM-DD.json
-
-Cómo ejecutarlo:
-  python ingesta/ingesta_gateguay.py
-
-Próximo paso:
-  Subir el JSON generado a Databricks y ejecutar
-  notebooks/transformacion_medallion.ipynb
-────────────────────────────────────────────────────────────────
-"""
-
 import requests
 import json
 import datetime
