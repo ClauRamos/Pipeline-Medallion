@@ -1,68 +1,7 @@
-# 🛒 Pipeline de Ventas — Arquitectura Medallion con Databricks
 
-Pipeline de ingesta y transformación de datos de productos usando la [FakeStore API](https://fakestoreapi.com/), implementado con Python y PySpark sobre Databricks siguiendo la arquitectura **Medallion (Bronze → Silver → Gold)**.
+# Flujo del pipeline paso a paso
 
----
-
-## 📐 Arquitectura
-
-```
-FakeStore API
-     │
-     ▼
-┌─────────────────────┐
-│  ingesta_gateguay.py │  ← Python local / scheduled job
-│  (extracción HTTP)   │
-└────────┬────────────┘
-         │  ventas_raw_{fecha}.json
-         ▼
-┌─────────────────────┐
-│     BRONZE LAYER     │  default.ventas_raw_YYYY_MM_DD
-│  (datos crudos JSON) │  ← sin transformar, tal como llegan
-└────────┬────────────┘
-         │
-         ▼
-┌─────────────────────┐
-│     SILVER LAYER     │  default.dim_productos_silver
-│  (datos limpios y    │  ← columnas renombradas, rating aplanado,
-│   normalizados)      │     timestamp de ingesta agregado
-└────────┬────────────┘
-         │
-         ▼
-┌─────────────────────┐
-│      GOLD LAYER      │  default.reporte_ventas_gold
-│  (métricas de        │  ← agrupado por categoría:
-│   negocio)           │     total productos + precio promedio
-└─────────────────────┘
-```
-
----
-
-## 📁 Estructura del repositorio
-
-```
-fakestore-medallion-pipeline/
-│
-├── ingesta/
-│   └── ingesta_gateguay.py          # Extracción desde FakeStore API
-│
-├── notebooks/
-│   └── transformacion_medallion.ipynb  # Notebook Databricks (Bronze→Silver→Gold)
-│
-├── data/
-│   └── sample/
-│       └── ventas_raw_2026-01-03.json  # Muestra del JSON crudo descargado
-│
-├── requirements.txt                 # Dependencias Python (entorno local)
-├── .gitignore
-└── README.md
-```
-
----
-
-## 🔄 Flujo del pipeline paso a paso
-
-### Paso 1 — Ingesta (Bronze)
+# Paso 1 — Ingesta (Bronze)
 
 `ingesta/ingesta_gateguay.py` se conecta a la FakeStore API, descarga el catálogo de productos y lo guarda como archivo JSON con partición de fecha:
 
@@ -72,7 +11,7 @@ ventas_raw_2026-01-03.json
 
 Ese archivo se sube manualmente (o via job) a Databricks como tabla Delta Bronze.
 
-### Paso 2 — Transformación Silver
+# Paso 2 — Transformación Silver
 
 Desde el notebook Databricks, se lee la tabla Bronze y se aplican las siguientes transformaciones:
 
@@ -105,9 +44,9 @@ Tabla resultante: `default.reporte_ventas_gold`
 
 ---
 
-## ⚙️ Cómo reproducir el proyecto
+# Cómo reproducir el proyecto
 
-### Pre-requisitos
+# Pre-requisitos
 
 - Python 3.8+
 - Cuenta en [Databricks Community Edition](https://community.cloud.databricks.com/) (gratuita)
@@ -152,7 +91,7 @@ Las tablas Delta `dim_productos_silver` y `reporte_ventas_gold` quedarán dispon
 
 ---
 
-## 🛠️ Stack tecnológico
+# Stack tecnológico
 
 | Herramienta | Uso |
 |---|---|
@@ -165,7 +104,7 @@ Las tablas Delta `dim_productos_silver` y `reporte_ventas_gold` quedarán dispon
 
 ---
 
-## 📊 Decisiones de diseño
+# Decisiones de diseño
 
 - **Partición por fecha**: el nombre del archivo JSON incluye la fecha de ejecución (`ventas_raw_YYYY-MM-DD.json`), lo que permite futuros procesamientos incrementales.
 - **Desanidado del struct `rating`**: en Bronze, el campo `rating` es un struct con subcampos `rate` y `count`. En Silver se aplana con `col("rating.rate")` para facilitar las agregaciones.
@@ -174,7 +113,7 @@ Las tablas Delta `dim_productos_silver` y `reporte_ventas_gold` quedarán dispon
 
 ---
 
-## 🚀 Posibles mejoras
+# Posibles mejoras
 
 - [ ] Automatizar la ingesta con **Databricks Jobs** o **Apache Airflow**
 - [ ] Agregar validaciones de calidad de datos con **Great Expectations**
@@ -184,7 +123,7 @@ Las tablas Delta `dim_productos_silver` y `reporte_ventas_gold` quedarán dispon
 
 ---
 
-## 👩‍💻 Autora
+
 
 **Claudia Ramos** — Junior Data Engineer  
 [GitHub](https://github.com/ClauRamos) · [LinkedIn](https://linkedin.com/in/claudia-ramos)
