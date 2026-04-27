@@ -37,20 +37,20 @@ Tabla resultante: `default.reporte_ventas_gold`
 
 # Cómo reproducir el proyecto
 
-# 1. Clonar el repositorio
+1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/ClauRamos/fakestore-medallion-pipeline.git
 cd fakestore-medallion-pipeline
 ```
 
-# 2. Instalar dependencias locales
+2. Instalar dependencias locales
 
 ```bash
 pip install -r requirements.txt
 ```
 
-# 3. Ejecutar la ingesta
+3. Ejecutar la ingesta
 
 ```bash
 python ingesta/ingesta_gateguay.py
@@ -58,7 +58,7 @@ python ingesta/ingesta_gateguay.py
 
 Esto genera el archivo `ventas_raw_{fecha}.json` en el directorio actual.
 
-# 4. Subir el JSON a Databricks
+4. Subir el JSON a Databricks
 
 En Databricks Community Edition:
 
@@ -66,7 +66,7 @@ En Databricks Community Edition:
 2. Subir el archivo `ventas_raw_{fecha}.json`
 3. Databricks lo registrará como tabla `default.ventas_raw_{fecha}` (con guiones bajos)
 
-# 5. Ejecutar el notebook
+5. Ejecutar el notebook
 
 1. Importar `notebooks/transformacion_medallion.ipynb` en Databricks
 2. Conectar a un cluster (DBR 13+ recomendado)
