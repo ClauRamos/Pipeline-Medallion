@@ -1,14 +1,10 @@
-# Paso 1 — Ingesta (Bronze)
-
 `ingesta/ingesta_gateguay.py` se conecta a la FakeStore API, descarga el catálogo de productos y lo guarda como archivo JSON con partición de fecha:
 
 ```
 ventas_raw_2026-01-03.json
 ```
 
-Ese archivo se sube manualmente (o via job) a Databricks como tabla Delta Bronze.
-
-# Paso 2 — Transformación Silver
+Ese archivo se sube manualmente (o via job) a Databricks como tabla Delta Bronze.Transformación Silver
 
 Desde el notebook Databricks, se lee la tabla Bronze y se aplican las siguientes transformaciones:
 
@@ -26,8 +22,6 @@ La columna `image` y `description` se descartan por no ser relevantes para el an
 
 Tabla resultante: `default.dim_productos_silver`
 
-### Paso 3 — Transformación Gold
-
 Agrupación por `categoria` para obtener métricas de negocio:
 
 | categoria | total_productos | precio_promedio_usd |
@@ -43,26 +37,20 @@ Tabla resultante: `default.reporte_ventas_gold`
 
 # Cómo reproducir el proyecto
 
-# Pre-requisitos
-
-- Python 3.8+
-- Cuenta en [Databricks Community Edition](https://community.cloud.databricks.com/) (gratuita)
-- Acceso a internet (para consumir la FakeStore API)
-
-### 1. Clonar el repositorio
+# 1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/ClauRamos/fakestore-medallion-pipeline.git
 cd fakestore-medallion-pipeline
 ```
 
-### 2. Instalar dependencias locales
+# 2. Instalar dependencias locales
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Ejecutar la ingesta
+# 3. Ejecutar la ingesta
 
 ```bash
 python ingesta/ingesta_gateguay.py
@@ -70,7 +58,7 @@ python ingesta/ingesta_gateguay.py
 
 Esto genera el archivo `ventas_raw_{fecha}.json` en el directorio actual.
 
-### 4. Subir el JSON a Databricks
+# 4. Subir el JSON a Databricks
 
 En Databricks Community Edition:
 
@@ -78,7 +66,7 @@ En Databricks Community Edition:
 2. Subir el archivo `ventas_raw_{fecha}.json`
 3. Databricks lo registrará como tabla `default.ventas_raw_{fecha}` (con guiones bajos)
 
-### 5. Ejecutar el notebook
+# 5. Ejecutar el notebook
 
 1. Importar `notebooks/transformacion_medallion.ipynb` en Databricks
 2. Conectar a un cluster (DBR 13+ recomendado)
