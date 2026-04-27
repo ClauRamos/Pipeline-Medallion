@@ -1,5 +1,3 @@
-# Flujo del pipeline paso a paso
-
 # Paso 1 — Ingesta (Bronze)
 
 `ingesta/ingesta_gateguay.py` se conecta a la FakeStore API, descarga el catálogo de productos y lo guarda como archivo JSON con partición de fecha:
